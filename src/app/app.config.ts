@@ -1,10 +1,12 @@
+// src/app/app.config.ts
+
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router'; // Para las rutas
-import { provideHttpClient } from '@angular/common/http'; // Para peticiones a la API
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
-import { routes } from './app.routes'; // Importa rutas
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +17,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura
       }
+      // Asegúrate de que no haya nada más aquí
     })
   ]
 };

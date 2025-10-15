@@ -1,5 +1,4 @@
 <div class="card p-4 m-4">
-
   <div class="mb-3">
     <span class="p-input-icon-left w-full">
       <i class="pi pi-search"></i>
@@ -15,7 +14,8 @@
   </div>
 
   <p-table 
-    #pokemonTable [value]="pokemons" 
+    #pokemonTable
+    [value]="pokemons" 
     [lazy]="true" 
     (onLazyLoad)="loadPokemons($event)"
     [paginator]="true" 
@@ -27,18 +27,27 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th>Nombre</th>
+        <th (click)="toggleSort()" style="cursor: pointer;">
+          Nombre
+          <span class="ml-2">
+            <i *ngIf="sortState === 'asc'" class="pi pi-sort-amount-up-alt"></i>
+            <i *ngIf="sortState === 'desc'" class="pi pi-sort-amount-down"></i>
+            <i *ngIf="sortState === 'none'" class="pi pi-sort-alt"></i>
+          </span>
+        </th>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-pokemon>
       <tr>
         <td>{{ pokemon.name | titlecase }}</td>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="1">No se encontraron Pokémon.</td>
-        </tr>
+      <tr>
+        <td colspan="1">No se encontraron Pokémon.</td>
+      </tr>
     </ng-template>
   </p-table>
 </div>

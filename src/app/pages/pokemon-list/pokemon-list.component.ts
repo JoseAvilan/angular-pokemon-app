@@ -1,12 +1,12 @@
 // src/app/pages/pokemon-list/pokemon-list.component.ts
 
-import { Component, ViewChild, inject } from '@angular/core'; // <-- CAMBIO: Importa ViewChild
-import { CommonModule } from '@angular/common';
+import { Component, ViewChild, inject } from '@angular/core';
+import { CommonModule } from '@angular/common'; // NgIf se importa desde aquí
 import { PokemonService } from '../../core/services/pokemon.service';
 import { PokemonListItem } from '../../interfaces/pokemon.interfaces';
 
 // --- Importaciones de PrimeNG ---
-import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table'; // <-- CAMBIO: Importa Table
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +21,6 @@ import { FormsModule } from '@angular/forms';
 export class PokemonListComponent {
 
   private pokemonService = inject(PokemonService);
-  
-  // Con ViewChild, obtenemos una referencia directa a la tabla en el HTML.
   @ViewChild('pokemonTable') pokemonTable!: Table;
 
   private allPokemons: PokemonListItem[] = [];
@@ -32,40 +30,55 @@ export class PokemonListComponent {
   rows: number = 10;
   loading: boolean = false;
   searchTerm: string = '';
+  
+  // NUEVO: Variable para controlar el ordenamiento manualmente
+  sortState: 'none' | 'asc' | 'desc' = 'none';
 
-  // Esta es AHORA la única función que carga y procesa datos.
   loadPokemons(event: TableLazyLoadEvent): void {
     this.loading = true;
-
-    // Si la lista maestra no está cargada, la cargamos UNA SOLA VEZ.
     if (this.allPokemons.length === 0) {
       this.pokemonService.getAllPokemonNames().subscribe(response => {
         this.allPokemons = response.results;
-        // Una vez cargada, aplicamos el filtro y la paginación del evento.
-        this.applyFilterAndPagination(event.first ?? 0);
+        this.applyFilterSortAndPagination(event.first ?? 0);
         this.loading = false;
       });
     } else {
-      // Si la lista ya existe, solo aplicamos el filtro y la paginación.
-      this.applyFilterAndPagination(event.first ?? 0);
+      this.applyFilterSortAndPagination(event.first ?? 0);
       this.loading = false;
     }
   }
 
-  // El método de búsqueda ahora es mucho más simple.
   onSearch(): void {
-    // Llama al método reset() de la tabla, que automáticamente
-    // disparará el evento onLazyLoad con los valores iniciales (página 1).
     this.pokemonTable.reset();
   }
 
-  // Esta función no cambia, sigue siendo la lógica central de procesamiento.
-  private applyFilterAndPagination(offset: number): void {
-    const filteredPokemons = this.allPokemons.filter(pokemon =>
+  // NUEVO: Método para cambiar el estado del ordenamiento
+  toggleSort(): void {
+    if (this.sortState === 'none') {
+      this.sortState = 'asc';
+    } else if (this.sortState === 'asc') {
+      this.sortState = 'desc';
+    } else {
+      this.sortState = 'none';
+    }
+    // Reseteamos la tabla para que se vuelva a cargar desde la página 1 con el nuevo orden
+    this.pokemonTable.reset();
+  }
+
+  private applyFilterSortAndPagination(offset: number): void {
+    let processedPokemons = this.allPokemons.filter(pokemon =>
       pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
-    this.totalRecords = filteredPokemons.length;
-    this.pokemons = filteredPokemons.slice(offset, offset + this.rows);
+    // MODIFICADO: Usamos nuestra variable 'sortState' en lugar del evento
+    if (this.sortState !== 'none') {
+      processedPokemons.sort((a, b) => {
+        const result = a.name.localeCompare(b.name);
+        return this.sortState === 'asc' ? result : -result;
+      });
+    }
+
+    this.totalRecords = processedPokemons.length;
+    this.pokemons = processedPokemons.slice(offset, offset + this.rows);
   }
 }
