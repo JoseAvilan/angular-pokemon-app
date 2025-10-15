@@ -1,6 +1,16 @@
 <div *ngIf="pokemon" class="pokemon-detail-card" [style.--main-color]="pokemonMainColor">
   
+  <button 
+    pButton 
+    icon="pi pi-times" 
+    class="p-button-rounded p-button-text close-button" 
+    (click)="onClose.emit()">
+  </button>
+  
   <div class="pokemon-header" [style.background-color]="pokemonMainColor">
+
+    <span *ngIf="isShiny" class="shiny-indicator"></span>
+
     <div class="header-content">
       <p-carousel 
         [value]="images" 
@@ -10,10 +20,10 @@
         [showNavigators]="false"
         [showIndicators]="true" 
         [autoplayInterval]="3000"
-      >
+        (onPage)="onCarouselPageChange($event)">
         <ng-template let-image pTemplate="item">
           <div class="carousel-image-container">
-            <img [src]="image" [alt]="pokemon.name" class="pokemon-main-image">
+            <img [src]="image.url" [alt]="pokemon.name" class="pokemon-main-image">
           </div>
         </ng-template>
       </p-carousel>
@@ -30,14 +40,15 @@
       </span>
     </div>
 
-    <div class="pokemon-physical-data mt-3 grid text-center">
-      <div class="col-6">
-        <span class="p-text-bold">{{ pokemon.weight / 10 }} KG</span>
-        <p class="p-text-secondary text-sm">Peso</p>
+    <div class="pokemon-physical-data mt-3">
+      <div class="data-point">
+        <span class="value">{{ pokemon.weight / 10 }} kg</span>
+        <span class="label">Peso</span>
       </div>
-      <div class="col-6">
-        <span class="p-text-bold">{{ pokemon.height / 10 }} M</span>
-        <p class="p-text-secondary text-sm">Altura</p>
+      <div class="separator"></div>
+      <div class="data-point">
+        <span class="value">{{ pokemon.height / 10 }} m</span>
+        <span class="label">Altura</span>
       </div>
     </div>
 
@@ -49,18 +60,18 @@
           [value]="calculateStatPercentage(stat.base_stat)" 
           [showValue]="false" 
           class="stat-progress-bar"
-          [style]="{'background-color': getStatBarColor(stat.stat.name)}">
+          [ngStyle]="{'--stat-color': getStatBarColor(stat.stat.name)}">
         </p-progressBar>
         <span class="stat-value">{{ stat.base_stat }}</span>
       </div>
       
       <div class="stat-item mt-3">
         <span class="stat-label">EXP</span>
-        <p-progressBar 
+         <p-progressBar 
           [value]="calculateExpPercentage(pokemon.base_experience)" 
           [showValue]="false" 
           class="stat-progress-bar"
-          [style]="{'background-color': '#4caf50'}">
+          [ngStyle]="{'--stat-color': 'var(--primary-color)'}">
         </p-progressBar>
         <span class="stat-value">{{ pokemon.base_experience }}</span>
       </div>

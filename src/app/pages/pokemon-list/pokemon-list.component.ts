@@ -1,16 +1,14 @@
-// src/app/pages/pokemon-list/pokemon-list.component.ts
-
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../core/services/pokemon.service';
 import { PokemonListItem, PokemonDetails } from '../../interfaces/pokemon.interfaces';
 
 // --- Importaciones de PrimeNG ---
-import { Table, TableLazyLoadEvent, TableModule, TableRowSelectEvent } from 'primeng/table'; 
-import { PaginatorModule } from 'primeng/paginator';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DropdownModule } from 'primeng/dropdown'; // <-- NUEVA IMPORTACIÓN
 
 // --- Importaciones de Componentes y Módulos ---
 import { FormsModule } from '@angular/forms';
@@ -19,77 +17,91 @@ import { PokemonDetailComponent } from '../../components/pokemon-detail/pokemon-
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  imports: [ CommonModule, TableModule, PaginatorModule, InputTextModule, FormsModule, DialogModule, ProgressSpinnerModule, PokemonDetailComponent ],
+  // Añadimos DropdownModule a los imports
+  imports: [ CommonModule, PaginatorModule, InputTextModule, FormsModule, DialogModule, ProgressSpinnerModule, PokemonDetailComponent, DropdownModule ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
 export class PokemonListComponent {
 
   private pokemonService = inject(PokemonService);
-  @ViewChild('pokemonTable') pokemonTable!: Table;
-
+  
   private allPokemons: PokemonListItem[] = [];
   pokemons: PokemonListItem[] = [];
 
   totalRecords: number = 0;
-  rows: number = 10;
-  loading: boolean = false;
+  rows: number = 18;
+  first: number = 0;
+  loading: boolean = true;
   searchTerm: string = '';
+  
+  // Lógica de ordenamiento
   sortState: 'none' | 'asc' | 'desc' = 'none';
+  sortOptions: any[]; // <-- NUEVO: Opciones para el dropdown
+  selectedSort: string = ''; // <-- NUEVO: Valor seleccionado en el dropdown
 
   isDialogVisible: boolean = false;
   selectedPokemon: PokemonDetails | null = null;
   isLoadingDetails: boolean = false;
 
-  loadPokemons(event: TableLazyLoadEvent): void {
+  constructor() {
+    // <-- NUEVO: Definimos las opciones del dropdown en el constructor
+    this.sortOptions = [
+      { label: 'Nombre (A-Z)', value: 'asc' },
+      { label: 'Nombre (Z-A)', value: 'desc' },
+      { label: 'Por defecto', value: 'none' }
+    ];
+  }
+
+  ngOnInit(): void {
     this.loading = true;
-    if (this.allPokemons.length === 0) {
-      this.pokemonService.getAllPokemonNames().subscribe(response => {
-        this.allPokemons = response.results;
-        this.applyFilterSortAndPagination(event.first ?? 0);
-        this.loading = false;
-      });
-    } else {
-      this.applyFilterSortAndPagination(event.first ?? 0);
+    this.pokemonService.getAllPokemonNames().subscribe(response => {
+      this.allPokemons = response.results;
+      this.applyFilterSortAndPagination(this.first);
       this.loading = false;
-    }
+    });
+  }
+
+  onPageChange(event: PaginatorState): void {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 18;
+    this.applyFilterSortAndPagination(this.first);
   }
 
   onSearch(): void {
-    this.pokemonTable.reset();
+    this.first = 0;
+    this.applyFilterSortAndPagination(this.first);
   }
 
-  toggleSort(): void {
-    if (this.sortState === 'none') {
-      this.sortState = 'asc';
-    } else if (this.sortState === 'asc') {
-      this.sortState = 'desc';
-    } else {
-      this.sortState = 'none';
-    }
-    this.pokemonTable.reset();
+  // <-- NUEVO: Este método se llama cuando el usuario cambia la opción del dropdown
+  onSortChange(): void {
+    this.sortState = this.selectedSort as 'asc' | 'desc' | 'none';
+    this.first = 0;
+    this.applyFilterSortAndPagination(this.first);
   }
 
-  onRowSelect(event: TableRowSelectEvent): void {
-    if (event.data && !Array.isArray(event.data)) {
-      const pokemon: PokemonListItem = event.data;
+  onCardSelect(pokemon: PokemonListItem): void {
+    this.selectedPokemon = null;
+    this.isLoadingDetails = true;
+    this.isDialogVisible = true;
 
-      this.selectedPokemon = null;
-      this.isLoadingDetails = true;
-      this.isDialogVisible = true;
-
-      this.pokemonService.getPokemonDetails(pokemon.name).subscribe(details => {
-        this.selectedPokemon = details;
-        this.isLoadingDetails = false;
-      });
-    }
+    this.pokemonService.getPokemonDetails(pokemon.name).subscribe(details => {
+      this.selectedPokemon = details;
+      this.isLoadingDetails = false;
+    });
   }
 
   private applyFilterSortAndPagination(offset: number): void {
-    let processedPokemons = this.allPokemons.filter(pokemon =>
-      pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    let processedPokemons = [...this.allPokemons]; // Copiamos para no modificar el original
 
+    // 1. Filtrar
+    if (this.searchTerm) {
+      processedPokemons = processedPokemons.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    // 2. Ordenar
     if (this.sortState !== 'none') {
       processedPokemons.sort((a, b) => {
         const result = a.name.localeCompare(b.name);
@@ -97,6 +109,7 @@ export class PokemonListComponent {
       });
     }
 
+    // 3. Paginar
     this.totalRecords = processedPokemons.length;
     this.pokemons = processedPokemons.slice(offset, offset + this.rows);
   }

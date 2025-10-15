@@ -1,26 +1,58 @@
-/* src/app/components/pokemon-detail/pokemon-detail.component.scss */
-
 :host {
-  display: block; // Necesario para que el div principal ocupe el ancho
-  --main-color: #e0e0e0; // Variable de CSS por defecto, se sobrescribe en HTML
+  display: block;
+  --main-color: #e0e0e0;
 }
 
 .pokemon-detail-card {
-  background-color: var(--surface-card); // Fondo general del popup
-  border-radius: 12px;
-  overflow: hidden; // Para que el header redondeado funcione
-  animation: fadeInScale 0.3s ease-out forwards; // Animación de aparición
+  background-color: var(--card-background);
+  border-radius: 0;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.close-button {
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  color: #fff !important;
+}
+
+body.light-theme .close-button {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  color: var(--text-color) !important;
 }
 
 .pokemon-header {
-  height: 200px; // Altura fija para el encabezado
-  border-bottom-left-radius: 50% 20px; // Curva moderna
-  border-bottom-right-radius: 50% 20px; // Curva moderna
+  height: 250px;
+  border-bottom-left-radius: 50% 20px;
+  border-bottom-right-radius: 50% 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative; // Para posicionar la imagen
-  transition: background-color 0.3s ease; // Animación de cambio de color
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.shiny-indicator {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 30px;
+  background-image: url('/assets/shiny.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 5;
+  filter: invert(1) drop-shadow(0 0 3px rgba(0,0,0,0.5));
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+body.light-theme .shiny-indicator {
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.3));
 }
 
 .header-content {
@@ -32,7 +64,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 20px; // Para que el carrusel no choque con el borde curvo
+  padding-bottom: 20px;
+  padding-top: 20px;
+  z-index: 1;
+}
+
+::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indicator button {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+body.light-theme ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indicator button {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background-color: var(--primary-color) !important;
 }
 
 .carousel-image-container {
@@ -44,11 +90,14 @@
 }
 
 .pokemon-main-image {
-  max-width: 180px;
-  max-height: 180px;
+  width: 300px;
+  height: 300px;
   object-fit: contain;
-  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.4)); // Sombra para realzar la imagen
-  animation: float 2s ease-in-out infinite; // Animación flotante
+  filter: drop-shadow(3px 3px 5px var(--shadow-color));
+  animation: float 2s ease-in-out infinite;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
 }
 
 .pokemon-info-body {
@@ -82,25 +131,42 @@
 }
 
 .pokemon-physical-data {
-  border-top: 1px solid var(--surface-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border-top: 1px solid var(--card-border);
   padding-top: 1rem;
   margin-top: 1rem;
-  color: var(--text-color-secondary);
   animation: fadeIn 0.7s ease-out forwards;
 }
 
-.pokemon-physical-data span {
+.data-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data-point .value {
   font-size: 1.2rem;
+  font-weight: 600;
   color: var(--text-color);
 }
 
-.pokemon-physical-data p {
+.data-point .label {
   margin-top: 0.25rem;
   font-size: 0.8rem;
+  color: var(--text-color-secondary);
+}
+
+.separator {
+  width: 1px;
+  height: 35px;
+  background-color: var(--card-border);
 }
 
 .pokemon-stats {
-  border-top: 1px solid var(--surface-border);
+  border-top: 1px solid var(--card-border);
   padding-top: 1rem;
   margin-top: 1rem;
   animation: fadeIn 0.8s ease-out forwards;
@@ -123,7 +189,7 @@
 }
 
 .stat-label {
-  width: 45px; // Abreviado HP, ATK
+  width: 45px;
   text-align: left;
   font-weight: 600;
   color: var(--text-color);
@@ -133,14 +199,16 @@
 .stat-progress-bar {
   flex-grow: 1;
   margin: 0 0.75rem;
-  height: 12px; // Más pequeña y elegante
+  height: 12px;
   border-radius: 6px;
   overflow: hidden;
+  background-color: var(--card-border);
+}
 
-  .p-progressbar-value {
-    background-color: var(--main-color) !important; // Usa el color principal del Pokémon
-    transition: width 0.5s ease-out; // Animación de llenado
-  }
+/* Aumentar especificidad para asegurar que nuestros colores personalizados se apliquen */
+::ng-deep .stat-progress-bar .p-progressbar-value {
+  background-color: var(--stat-color) !important;
+  transition: width 0.5s ease-out;
 }
 
 .stat-value {
@@ -151,7 +219,6 @@
   flex-shrink: 0;
 }
 
-// Keyframe Animations
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -183,4 +250,15 @@
   0% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
   100% { transform: translateY(0px); }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
 }

@@ -1,13 +1,10 @@
-// src/app/components/pokemon-detail/pokemon-detail.component.ts
-
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonDetails } from '../../interfaces/pokemon.interfaces';
-
-// --- Importaciones de PrimeNG ---
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CarouselModule } from 'primeng/carousel';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -17,59 +14,58 @@ import { CarouselModule } from 'primeng/carousel';
     TagModule,
     ProgressBarModule,
     CarouselModule,
+    ButtonModule,
   ],
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss']
 })
 export class PokemonDetailComponent implements OnChanges {
   @Input() pokemon: PokemonDetails | null = null;
+  @Output() onClose = new EventEmitter<void>();
 
-  images: string[] = [];
-  pokemonMainColor: string = '#E0E0E0'; // Color por defecto
+  images: { url: string, isShiny: boolean }[] = [];
+  pokemonMainColor: string = '#E0E0E0';
+  isShiny: boolean = false;
 
   ngOnChanges() {
-    this.images = []; // Limpia las imágenes anteriores
+    this.images = [];
+    this.isShiny = false;
     if (this.pokemon && this.pokemon.sprites) {
-      // Limpia la lógica del carrusel y prioriza la imagen oficial
-      if (this.pokemon.sprites.other?.['official-artwork']?.front_default) {
-        this.images.push(this.pokemon.sprites.other['official-artwork'].front_default);
+      const frontDefault = this.pokemon.sprites.front_default;
+      const frontShiny = this.pokemon.sprites.front_shiny;
+
+      if (frontDefault) {
+        this.images.push({ url: frontDefault, isShiny: false });
       }
-      
-      // Añadimos otros sprites (front_default, front_shiny, etc.) si no es la imagen principal
-      Object.values(this.pokemon.sprites)
-        .filter(sprite => typeof sprite === 'string' && sprite)
-        .forEach(sprite => {
-          if (sprite !== this.images[0]) { // Evitar duplicar la imagen oficial
-            this.images.push(sprite as string);
-          }
-        });
-      
-      // Asignar color principal basado en el primer tipo
+      if (frontShiny) {
+        this.images.push({ url: frontShiny, isShiny: true });
+      }
+
       if (this.pokemon.types && this.pokemon.types.length > 0) {
         this.pokemonMainColor = this.getTypeColor(this.pokemon.types[0].type.name);
       } else {
-        this.pokemonMainColor = '#E0E0E0'; // Resetea a gris si no hay tipo
+        this.pokemonMainColor = '#E0E0E0';
       }
     }
   }
 
-  // CORREGIDO: Función para calcular el porcentaje de una estadística
+  onCarouselPageChange(event: any) {
+    this.isShiny = this.images[event.page]?.isShiny || false;
+  }
+
   calculateStatPercentage(baseStat: number, maxStat: number = 200): number {
     return (baseStat / maxStat) * 100;
   }
 
-  // CORREGIDO: Función para calcular el porcentaje de la experiencia
   calculateExpPercentage(baseExp: number, maxExp: number = 1000): number {
     return (baseExp / maxExp) * 100;
   }
 
-  // Función para capitalizar nombres (ej. "fire" -> "Fire", "special-attack" -> "Special Attack")
   capitalize(text: string): string {
     if (!text) return '';
     return text.charAt(0).toUpperCase() + text.slice(1).replace('-', ' ');
   }
 
-  // Función para obtener el color de un tipo de Pokémon
   getTypeColor(typeName: string): string {
     switch (typeName.toLowerCase()) {
       case 'normal': return '#A8A77A';
@@ -94,7 +90,6 @@ export class PokemonDetailComponent implements OnChanges {
     }
   }
 
-  // Función para obtener el color de la barra de stat
   getStatBarColor(statName: string): string {
     switch (statName.toLowerCase()) {
       case 'hp': return '#FF5959'; 
@@ -107,7 +102,6 @@ export class PokemonDetailComponent implements OnChanges {
     }
   }
 
-  // Función para formatear el nombre del stat (ej. 'hp' -> 'HP', 'attack' -> 'ATK')
   formatStatName(statName: string): string {
     switch (statName.toLowerCase()) {
       case 'hp': return 'HP';

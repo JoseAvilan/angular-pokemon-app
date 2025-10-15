@@ -8,10 +8,9 @@ export interface PokemonListResponse {
 export interface PokemonListItem {
   name: string;
   url:  string;
+  id: number;         
+  imageUrl: string;   
 }
-
-// Interfaces para los detalles del Pokémon
-
 export interface PokemonDetails {
   id:             number;
   name:           string;

@@ -1,1 +1,10 @@
+<div class="theme-switch-wrapper">
+  <i class="pi pi-sun"></i>
+  <p-inputSwitch 
+    [(ngModel)]="isLightTheme" 
+    (onChange)="onThemeChange($event.checked)">
+  </p-inputSwitch>
+  <i class="pi pi-moon"></i>
+</div>
+
 <app-pokemon-list></app-pokemon-list>

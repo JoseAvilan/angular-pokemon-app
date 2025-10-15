@@ -1,58 +1,50 @@
-<div class="card p-4 m-4">
-  <div class="mb-3">
-    <span class="p-input-icon-left w-full">
+<div class="pokedex-container">
+  <div class="header">
+    <span class="p-input-icon-left search-bar">
       <i class="pi pi-search"></i>
       <input 
         type="text" 
         pInputText 
         [(ngModel)]="searchTerm"
         (input)="onSearch()"
-        placeholder="Filtrar por nombre..." 
+        placeholder="Buscar Pokémon..." 
         class="w-full"
       />
     </span>
+
+    <p-dropdown 
+      [options]="sortOptions" 
+      [(ngModel)]="selectedSort" 
+      (onChange)="onSortChange()"
+      placeholder="Ordenar por nombre"
+      styleClass="sort-dropdown"
+    ></p-dropdown>
+  </div>
+  
+  <div class="pokemon-grid">
+    <div 
+      *ngFor="let pokemon of pokemons" 
+      class="pokemon-card"
+      (click)="onCardSelect(pokemon)"
+      tabindex="0"
+      (keyup.enter)="onCardSelect(pokemon)">
+      
+      <img [src]="pokemon.imageUrl" [alt]="pokemon.name" class="pokemon-image">
+      <h3 class="pokemon-name">{{ pokemon.name | titlecase }}</h3>
+    </div>
   </div>
 
-  <p-table 
-    #pokemonTable
-    [value]="pokemons" 
-    [lazy]="true" 
-    (onLazyLoad)="loadPokemons($event)"
-    [paginator]="true" 
-    [rows]="rows" 
+  <div *ngIf="pokemons.length === 0 && !loading" class="empty-message">
+    No se encontraron Pokémon.
+  </div>
+
+  <p-paginator
+    #paginator
+    (onPageChange)="onPageChange($event)"
+    [rows]="rows"
     [totalRecords]="totalRecords"
-    [tableStyle]="{'min-width': '50rem'}"
-    styleClass="p-datatable-striped p-datatable-selectable"
-    [loading]="loading"
-    selectionMode="single"
-    (onRowSelect)="onRowSelect($event)" dataKey="name"
-    dataKey="name"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th (click)="toggleSort()" style="cursor: pointer;">
-          Nombre
-          <span class="ml-2">
-            <i *ngIf="sortState === 'asc'" class="pi pi-sort-amount-up-alt"></i>
-            <i *ngIf="sortState === 'desc'" class="pi pi-sort-amount-down"></i>
-            <i *ngIf="sortState === 'none'" class="pi pi-sort-alt"></i>
-          </span>
-        </th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-pokemon>
-      <tr [pSelectableRow]="pokemon">
-        <td>{{ pokemon.name | titlecase }}</td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="1">No se encontraron Pokémon.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+    [first]="first"
+  ></p-paginator>
 </div>
 
 <p-dialog 
@@ -62,11 +54,14 @@
   [style]="{width: '50vw', 'max-width': '450px'}"
   [draggable]="false" 
   [resizable]="false"
-  styleClass="no-dialog-background" >
+  styleClass="no-dialog-background">
+  
   <div *ngIf="isLoadingDetails" class="flex justify-content-center p-5">
     <p-progressSpinner></p-progressSpinner>
   </div>
-
-  <app-pokemon-detail [pokemon]="selectedPokemon"></app-pokemon-detail>
   
+  <app-pokemon-detail 
+    [pokemon]="selectedPokemon" 
+    (onClose)="isDialogVisible = false">
+  </app-pokemon-detail>
 </p-dialog>

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { PokemonListResponse, PokemonDetails } from '../../interfaces/pokemon.interfaces'; // <-- CAMBIO AQUÍ
+import { Observable, map } from 'rxjs'; // Se añade la importación de 'map'
+import { PokemonListResponse, PokemonDetails } from '../../interfaces/pokemon.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +26,29 @@ export class PokemonService {
   }
   
   /**
-   * Obtiene la lista completa de todos los Pokémon.
-   * @returns Un Observable con la respuesta de la API.
+   * Obtiene la lista completa de todos los Pokémon, enriquecida con ID y URL de imagen.
+   * @returns Un Observable con la respuesta de la API transformada.
    */
   getAllPokemonNames(): Observable<PokemonListResponse> {
     // Pedimos a la API un límite alto para traerlos todos. 
     // La API reporta ~1302 Pokémon, 2000 es un número seguro.
     return this.http.get<PokemonListResponse>(`${this.baseUrl}/pokemon`, {
       params: { limit: 2000, offset: 0 }
-    });
+    }).pipe(
+      // Transformamos la respuesta para añadir los nuevos campos
+      map(response => {
+        response.results.forEach(pokemon => {
+          // Extraemos el ID de la URL. Ej: ".../pokemon/25/" -> "25"
+          const urlParts = pokemon.url.split('/');
+          const id = parseInt(urlParts[urlParts.length - 2]);
+          pokemon.id = id;
+          
+          // Construimos la URL de la imagen oficial de alta calidad
+          pokemon.imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+        });
+        return response;
+      })
+    );
   }
 
   /**
