@@ -1,6 +1,21 @@
 <div class="card p-4 m-4">
+
+  <div class="mb-3">
+    <span class="p-input-icon-left w-full">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Filtrar por nombre..." 
+        class="w-full"
+      />
+    </span>
+  </div>
+
   <p-table 
-    [value]="pokemons" 
+    #pokemonTable [value]="pokemons" 
     [lazy]="true" 
     (onLazyLoad)="loadPokemons($event)"
     [paginator]="true" 
