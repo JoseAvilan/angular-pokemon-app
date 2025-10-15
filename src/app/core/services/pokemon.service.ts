@@ -1,9 +1,7 @@
-// src/app/core/services/pokemon.service.ts
-
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs'; // <-- Importa 'map'
-import { PokemonListResponse } from '../../interfaces/pokemon.interfaces';
+import { Observable } from 'rxjs';
+import { PokemonListResponse, PokemonDetails } from '../../interfaces/pokemon.interfaces'; // <-- CAMBIO AQUÍ
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +35,14 @@ export class PokemonService {
     return this.http.get<PokemonListResponse>(`${this.baseUrl}/pokemon`, {
       params: { limit: 2000, offset: 0 }
     });
+  }
+
+  /**
+   * Obtiene los detalles completos de un Pokémon específico por su nombre.
+   * @param name El nombre del Pokémon.
+   * @returns Un Observable con los detalles del Pokémon.
+   */
+  getPokemonDetails(name: string): Observable<PokemonDetails> {
+    return this.http.get<PokemonDetails>(`${this.baseUrl}/pokemon/${name}`);
   }
 }
