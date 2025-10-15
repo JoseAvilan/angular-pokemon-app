@@ -39,15 +39,16 @@ body.light-theme .close-button {
 
 .shiny-indicator {
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 55px; 
+  left: 15px; 
   width: 30px;
   height: 30px;
   background-image: url('/assets/shiny.png');
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 5;
-  filter: invert(1) drop-shadow(0 0 3px rgba(0,0,0,0.5));
+  // Quitamos el invert(1) para mantener el color blanco original
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
   animation: sparkle 1.5s ease-in-out infinite;
 }
 
@@ -218,6 +219,25 @@ body.light-theme ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indica
   color: var(--text-color);
   flex-shrink: 0;
 }
+
+.pokemon-id-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 5;
+}
+
+body.light-theme .pokemon-id-badge {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--text-color);
+}
+
 
 @keyframes fadeInScale {
   from {

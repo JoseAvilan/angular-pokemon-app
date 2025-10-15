@@ -11,6 +11,8 @@
 
     <span *ngIf="isShiny" class="shiny-indicator"></span>
 
+    <span class="pokemon-id-badge">#{{ pokemon.id | number: '3.0-0' }}</span>
+
     <div class="header-content">
       <p-carousel 
         [value]="images" 

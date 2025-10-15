@@ -2,6 +2,7 @@
   max-width: 1200px;
   margin: 2rem auto;
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 .header {
@@ -9,10 +10,16 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  padding: 0;
+  width: 100%;
 }
 
 .search-bar {
   flex-grow: 1;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
 }
 .sort-dropdown {
   width: 200px;
@@ -36,7 +43,7 @@
   border: 1px solid var(--card-border);
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  position: relative; // Necesario para posicionar el ID
+  position: relative;
 
   &:hover {
     transform: translateY(-5px);
@@ -79,11 +86,38 @@
 }
 
 // Estilos para los filtros
+::ng-deep .p-input-icon-left {
+  width: 100%;
+  position: relative;
+  
+  > i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px !important;
+    color: var(--text-color-secondary) !important;
+    z-index: 1;
+  }
+  
+  > .p-inputtext {
+    width: 100%;
+    padding-left: 2.5rem !important;
+    border-radius: 4px;
+  }
+}
+
+/* Ajuste para el input de búsqueda */
+::ng-deep .p-input-icon-left > .p-inputtext {
+  padding-left: 2.5rem !important; // Aumentamos el padding izquierdo para dar espacio al icono
+}
 ::ng-deep .p-inputtext, ::ng-deep .p-dropdown .p-dropdown-label {
   background: var(--input-background) !important;
   color: var(--text-color) !important;
   border-color: var(--input-border) !important;
 }
+
+
+
 ::ng-deep .p-dropdown-panel {
   background: var(--input-background) !important;
 }
@@ -98,11 +132,63 @@
   .p-paginator-first,
   .p-paginator-last {
     color: var(--text-color) !important;
+    
+    // Estado hover general
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.2) !important; // Color neutro con transparencia
+      color: var(--text-color) !important;
+    }
   }
   
   .p-paginator-page.p-highlight {
     background-color: var(--primary-color) !important;
     color: #ffffff !important;
+  }
+}
+
+// Estilos específicos para el modo claro
+body.light-theme ::ng-deep .p-paginator {
+  .p-paginator-page,
+  .p-paginator-next,
+  .p-paginator-prev,
+  .p-paginator-first,
+  .p-paginator-last {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08) !important; // Color más claro para el modo claro
+      color: var(--text-color) !important;
+    }
+  }
+  
+  // Mantener el color del elemento seleccionado igual en ambos temas
+  .p-paginator-page.p-highlight {
+    color: #ffffff !important;
+  }
+}
+
+.pokedex-title {
+  font-family: 'Press Start 2P', cursive;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #FFCB05;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow: 
+    -2px -2px 0 #3D7DCA, 
+    2px -2px 0 #3D7DCA, 
+    -2px 2px 0 #3D7DCA, 
+    2px 2px 0 #3D7DCA;
+    
+  animation: fadeIn 1s ease-out;
+}
+
+@media (min-width: 768px) {
+  .pokedex-title {
+    font-size: 2.5rem;
+        text-shadow: 
+      -2.5px -2.5px 0 #3D7DCA, 
+      2.5px -2.5px 0 #3D7DCA, 
+      -2.5px 2.5px 0 #3D7DCA, 
+      2.5px 2.5px 0 #3D7DCA;
   }
 }
 
@@ -140,5 +226,50 @@
     background-color: var(--scrollbar-thumb-color);
     border-radius: 4px;
     border: 2px solid var(--scrollbar-track-color);
+  }
+}
+
+// Estilos completos para el dropdown en ambos temas
+::ng-deep .p-dropdown {
+  background: var(--input-background) !important;
+  border-color: var(--input-border) !important;
+  
+  // Estilo para el trigger/botón del dropdown
+  .p-dropdown-trigger {
+    background: var(--input-background) !important;
+    color: var(--text-color-secondary) !important;
+  }
+  
+  // Estilo para la etiqueta/texto seleccionado
+  .p-dropdown-label {
+    color: var(--text-color) !important;
+  }
+}
+
+// Estilos para el panel desplegable
+::ng-deep .p-dropdown-panel {
+  background: var(--input-background) !important;
+  border-color: var(--input-border) !important;
+  
+  // Estilo para los items de la lista
+  .p-dropdown-items {
+    .p-dropdown-item {
+      color: var(--text-color) !important;
+      
+      &:hover {
+        background-color: var(--card-border) !important;
+        color: var(--text-color) !important;
+      }
+      
+      &.p-highlight {
+        background-color: var(--primary-color) !important;
+        color: white !important;
+      }
+    }
+    
+    // Separador entre items
+    .p-dropdown-item-group {
+      color: var(--text-color-secondary) !important;
+    }
   }
 }

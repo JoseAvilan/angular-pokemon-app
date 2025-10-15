@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { PokemonService } from '../../core/services/pokemon.service';
 import { PokemonListItem, PokemonDetails } from '../../interfaces/pokemon.interfaces';
 
@@ -18,7 +18,7 @@ import { PokemonDetailComponent } from '../../components/pokemon-detail/pokemon-
   selector: 'app-pokemon-list',
   standalone: true,
   // Añadimos DropdownModule a los imports
-  imports: [ CommonModule, PaginatorModule, InputTextModule, FormsModule, DialogModule, ProgressSpinnerModule, PokemonDetailComponent, DropdownModule ],
+  imports: [ CommonModule, DecimalPipe, PaginatorModule, InputTextModule, FormsModule, DialogModule, ProgressSpinnerModule, PokemonDetailComponent, DropdownModule ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
