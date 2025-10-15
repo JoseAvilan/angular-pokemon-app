@@ -1,48 +1,69 @@
-<div *ngIf="pokemon" class="pokemon-detail-container">
-
-  <div class="mb-4" *ngIf="images.length > 0">
-    <p-carousel 
-      [value]="images" 
-      [numVisible]="1" 
-      [numScroll]="1" 
-      [circular]="true"
-    >
-      <ng-template let-image pTemplate="item">
-        <div class="carousel-item-content">
-          <img [src]="image" alt="Sprite del Pokémon" class="pokemon-image">
-        </div>
-      </ng-template>
-    </p-carousel>
-  </div>
+<div *ngIf="pokemon" class="pokemon-detail-card" [style.--main-color]="pokemonMainColor">
   
-  <p-card>
-    <ng-template pTemplate="title">
-      <div class="flex justify-content-between align-items-center">
-        <span>{{ pokemon.name | titlecase }}</span>
-        <span class="font-normal text-gray-500">#{{ pokemon.id }}</span>
-      </div>
-    </ng-template>
+  <div class="pokemon-header" [style.background-color]="pokemonMainColor">
+    <div class="header-content">
+      <p-carousel 
+        [value]="images" 
+        [numVisible]="1" 
+        [numScroll]="1" 
+        [circular]="true" 
+        [showNavigators]="false"
+        [showIndicators]="true" 
+        [autoplayInterval]="3000"
+      >
+        <ng-template let-image pTemplate="item">
+          <div class="carousel-image-container">
+            <img [src]="image" [alt]="pokemon.name" class="pokemon-main-image">
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
 
-    <ng-template pTemplate="content">
-      <div class="grid">
-        <div class="col-6">
-          <strong>Altura:</strong>
-          <p>{{ pokemon.height / 10 }} m</p> </div>
-        <div class="col-6">
-          <strong>Peso:</strong>
-          <p>{{ pokemon.weight / 10 }} kg</p> </div>
+  <div class="pokemon-info-body">
+    <h2 class="pokemon-name">{{ capitalize(pokemon.name) }}</h2>
+
+    <div class="pokemon-types mt-2">
+      <span *ngFor="let typeInfo of pokemon.types" class="type-tag"
+            [style.background-color]="getTypeColor(typeInfo.type.name)">
+        {{ capitalize(typeInfo.type.name) }}
+      </span>
+    </div>
+
+    <div class="pokemon-physical-data mt-3 grid text-center">
+      <div class="col-6">
+        <span class="p-text-bold">{{ pokemon.weight / 10 }} KG</span>
+        <p class="p-text-secondary text-sm">Peso</p>
+      </div>
+      <div class="col-6">
+        <span class="p-text-bold">{{ pokemon.height / 10 }} M</span>
+        <p class="p-text-secondary text-sm">Altura</p>
+      </div>
+    </div>
+
+    <div class="pokemon-stats mt-4">
+      <h3 class="stats-title">Estadísticas Base</h3>
+      <div *ngFor="let stat of pokemon.stats" class="stat-item">
+        <span class="stat-label">{{ formatStatName(stat.stat.name) }}</span>
+        <p-progressBar 
+          [value]="calculateStatPercentage(stat.base_stat)" 
+          [showValue]="false" 
+          class="stat-progress-bar"
+          [style]="{'background-color': getStatBarColor(stat.stat.name)}">
+        </p-progressBar>
+        <span class="stat-value">{{ stat.base_stat }}</span>
       </div>
       
-      <div class="mt-3">
-        <strong>Tipos:</strong>
-        <div class="mt-2">
-          <span *ngFor="let typeInfo of pokemon.types" class="mr-1">
-            <p-tag [value]="typeInfo.type.name" [rounded]="true"></p-tag>
-          </span>
-        </div>
+      <div class="stat-item mt-3">
+        <span class="stat-label">EXP</span>
+        <p-progressBar 
+          [value]="calculateExpPercentage(pokemon.base_experience)" 
+          [showValue]="false" 
+          class="stat-progress-bar"
+          [style]="{'background-color': '#4caf50'}">
+        </p-progressBar>
+        <span class="stat-value">{{ pokemon.base_experience }}</span>
       </div>
-
-    </ng-template>
-  </p-card>
-
+    </div>
+  </div>
 </div>

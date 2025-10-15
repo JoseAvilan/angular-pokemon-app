@@ -62,11 +62,11 @@
   [style]="{width: '50vw', 'max-width': '450px'}"
   [draggable]="false" 
   [resizable]="false"
->
+  styleClass="no-dialog-background" >
   <div *ngIf="isLoadingDetails" class="flex justify-content-center p-5">
     <p-progressSpinner></p-progressSpinner>
   </div>
 
   <app-pokemon-detail [pokemon]="selectedPokemon"></app-pokemon-detail>
-
+  
 </p-dialog>
