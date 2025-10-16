@@ -90,15 +90,15 @@ body.light-theme ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indica
 }
 
 .pokemon-main-image {
-  width: 200px;  // Reducir de 300px a 270px
-  height: 200px; // Reducir proporcionalmente la altura también
+  width: 200px;  
+  height: 200px; 
   object-fit: contain;
   filter: drop-shadow(3px 3px 5px var(--shadow-color));
   animation: float 2s ease-in-out infinite;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
-  max-width: 100%; // Asegurar que nunca exceda el ancho del contenedor
+  max-width: 100%;
 }
 
 .pokemon-info-body {
@@ -206,7 +206,7 @@ body.light-theme ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indica
   background-color: var(--card-border);
 }
 
-/* Aumentar especificidad para asegurar que nuestros colores personalizados se apliquen */
+
 ::ng-deep .stat-progress-bar .p-progressbar-value {
   background-color: var(--stat-color) !important;
   transition: width 0.5s ease-out;
@@ -241,20 +241,20 @@ body.light-theme .pokemon-id-badge {
 // Ajustes para el popup de detalles en móviles
 @media (max-width: 768px) {
   .pokemon-main-image {
-    width: 220px; // Reducir de 250px a 220px
+    width: 220px;
     height: 220px;
   }
   
   .pokemon-info-body {
-    padding: 1rem; // Reducir padding en móviles
+    padding: 1rem;
   }
   
   .pokemon-physical-data {
-    gap: 1rem; // Menos espacio entre elementos
+    gap: 1rem; 
   }
   
   .pokemon-name {
-    font-size: 1.5rem; // Texto más pequeño
+    font-size: 1.5rem; 
   }
   
   .stat-item {
@@ -262,11 +262,11 @@ body.light-theme .pokemon-id-badge {
   }
   
   .stat-label {
-    width: 35px; // Más compacto
+    width: 35px;
   }
   
   .stat-progress-bar {
-    margin: 0 0.5rem; // Menos margen
+    margin: 0 0.5rem; 
   }
   
   // Asegurar que las estadísticas no causen overflow
@@ -279,7 +279,7 @@ body.light-theme .pokemon-id-badge {
   
   // Ajuste para los tipos en dispositivos pequeños
   .pokemon-types {
-    flex-wrap: wrap; // Permitir que los tipos envuelvan si hay muchos
+    flex-wrap: wrap; 
     justify-content: center;
   }
   

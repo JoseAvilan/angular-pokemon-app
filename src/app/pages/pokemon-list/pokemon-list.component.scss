@@ -456,3 +456,45 @@ body.light-theme ::ng-deep .p-paginator {
     box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
   }
 }
+
+// Añadir estos estilos al final del archivo
+
+// Estilos para el panel de filtros en el overlay
+::ng-deep .p-overlaypanel {
+  background: var(--card-background) !important;
+  border: 1px solid var(--card-border) !important;
+  
+  .p-overlaypanel-content {
+    padding: 0.5rem !important;
+  }
+  
+  .p-overlaypanel-close {
+    background: var(--card-background) !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    
+    &:hover {
+      background: var(--card-border) !important;
+    }
+  }
+}
+
+.filter-panel-content {
+  padding: 0.5rem;
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-size: 1.2rem;
+  }
+}
+
+.filter-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  color: var(--text-color-secondary);
+}

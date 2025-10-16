@@ -24,7 +24,7 @@
     <p-button 
       icon="pi pi-filter" 
       styleClass="p-button-text filter-button" 
-      (onClick)="toggleFilterPanel()">
+      (onClick)="toggleFilterPanel($event, op)">
     </p-button>
   </div>
   
@@ -82,22 +82,32 @@
   </app-pokemon-detail>
 </p-dialog>
 
-<div class="filter-panel" *ngIf="showFilters">
-  <h3>Filtrar por tipo</h3>
-  <div class="type-filters">
-    <p-chip 
-      *ngFor="let type of pokemonTypes"
-      [label]="type.name | titlecase"
-      [style.background-color]="getTypeColor(type.name)"
-      [style.color]="'white'"
-      [ngClass]="{'selected-chip': selectedTypes.includes(type.name)}"
-      (click)="toggleTypeFilter(type.name)"
-      styleClass="type-filter-chip">
-    </p-chip>
-  </div>
-  
-  <div class="filter-actions">
-    <p-button label="Limpiar filtros" icon="pi pi-times" styleClass="p-button-text" (onClick)="clearFilters()"></p-button>
-    <p-button label="Aplicar" icon="pi pi-check" (onClick)="applyFilters()"></p-button>
-  </div>
-</div>
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '300px'}">
+  <ng-template pTemplate>
+    <div class="filter-panel-content">
+      <h3>Filtrar por tipo</h3>
+      
+      <div class="type-filters">
+        <p-chip 
+          *ngFor="let type of pokemonTypes"
+          [label]="type.name | titlecase"
+          [style.background-color]="getTypeColor(type.name)"
+          [style.color]="'white'"
+          [ngClass]="{'selected-chip': selectedTypes.includes(type.name)}"
+          (click)="toggleTypeFilter(type.name)"
+          styleClass="type-filter-chip">
+        </p-chip>
+      </div>
+      
+      <div *ngIf="loadingTypes" class="filter-loading">
+        <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+        <span>Cargando tipos...</span>
+      </div>
+      
+      <div class="filter-actions">
+        <p-button label="Limpiar" icon="pi pi-times" styleClass="p-button-text" (onClick)="clearFilters()"></p-button>
+        <p-button label="Aplicar" icon="pi pi-check" (onClick)="applyFilters(op)"></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-overlayPanel>

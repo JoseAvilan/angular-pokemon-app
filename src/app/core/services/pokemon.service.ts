@@ -91,4 +91,27 @@ export class PokemonService {
 
     return colorMap[type.toLowerCase()] || { primary: '#A8A878', secondary: '#C6C6A7', text: '#212121' };
   }
+
+  /**
+   * Obtiene los tipos de un Pokémon específico por su ID
+   * @param id El ID del Pokémon
+   * @returns Un Observable con los tipos del Pokémon
+   */
+  getPokemonTypes(id: number): Observable<string[]> {
+    return this.http.get<PokemonDetails>(`${this.baseUrl}/pokemon/${id}`)
+      .pipe(
+        map(details => details.types.map(t => t.type.name))
+      );
+  }
+
+  /**
+   * Obtiene todos los tipos de Pokémon disponibles
+   * @returns Un Observable con la lista de tipos
+   */
+  getAllTypes(): Observable<string[]> {
+    return this.http.get<{results: {name: string}[]}>(`${this.baseUrl}/type`)
+      .pipe(
+        map(response => response.results.map(type => type.name))
+      );
+  }
 }
