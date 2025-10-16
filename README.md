@@ -94,10 +94,67 @@ Vista de Cuadrícula de Pokémon
 
 La vista principal muestra una cuadrícula de tarjetas de Pokémon con información básica:
 
-- **[Número ID del Pokémon]
-- **[Imagen del sprite]
-- **[Nombre con formato adecuado]
+- Número ID del Pokémon
+- Imagen del sprite
+- Nombre con formato adecuado
 
 Vista de Detalle
 
 Al hacer clic en una tarjeta de Pokémon se abre un popup detallado que muestra:
+
+- Arte oficial de alta calidad
+- Variante shiny (accesible a través del carrusel)
+- Información de tipo con etiquetas codificadas por color
+- Atributos físicos (altura/peso)
+- Estadísticas base con barras de progreso visuales
+
+Filtrado por Tipo en Tiempo Real
+
+- Filtra por cualquier tipo de Pokémon (Fuego, Agua, Planta, etc.)
+- Visualiza los resultados instantáneamente al seleccionar tipos
+- Indicación visual de los filtros seleccionados
+- Limpia los filtros con un solo clic
+
+Soporte de Temas
+
+Los usuarios pueden alternar entre temas oscuro y claro:
+
+- Tema oscuro (predeterminado) optimizado para entornos con poca luz
+- Tema claro para entornos brillantes
+- Estilo consistente y legibilidad en ambos temas
+- Preferencia de tema persistente
+
+Diseño Responsive
+
+La aplicación es completamente responsive:
+- El diseño de cuadrícula se adapta al tamaño de la pantalla
+- Vista de detalle optimizada para móviles
+- Controles de filtro adaptados para interfaces táctiles
+- Vista de detalle a pantalla completa en dispositivos móviles
+
+## ⚙️ Configuración
+
+La aplicación utiliza la configuración estándar de Angular. Puedes modificar:
+
+- Endpoints de API en el servicio de Pokémon
+- Colores del tema en las variables SCSS globales
+- Comportamiento de los componentes a través de sus respectivos archivos
+
+## 📊 Optimización del Rendimiento
+
+- Paginación - Limita el número de elementos mostrados para un mejor rendimiento
+- Caché - Los datos de Pokémon se almacenan en caché para reducir las llamadas a la API
+- Filtrado por Tipo - Utiliza algoritmos eficientes para filtrar Pokémon por tipo
+
+## 🙏 Créditos
+
+- Datos de Pokémon proporcionados por PokéAPI
+- Iconos de PrimeIcons
+- Fuentes: Poppins y Press Start 2P de Google Fonts
+- Componentes UI de PrimeNG
+
+## 📄 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo LICENSE para más detalles.
+
+Nota: Esta Pokédex es una aplicación hecha por fans y no está afiliada con Nintendo, Game Freak o The Pokémon Company.
