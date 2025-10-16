@@ -42,7 +42,7 @@
       </span>
     </div>
 
-    <div class="pokemon-physical-data mt-3">
+    <div class="pokemon-physical-data">
       <div class="data-point">
         <span class="value">{{ pokemon.weight / 10 }} kg</span>
         <span class="label">Peso</span>
@@ -54,8 +54,8 @@
       </div>
     </div>
 
-    <div class="pokemon-stats mt-4">
-      <h3 class="stats-title">Estadísticas Base</h3>
+    <div class="pokemon-stats">
+      <h3 class="stats-title">Estadísticas</h3>
       <div *ngFor="let stat of pokemon.stats" class="stat-item">
         <span class="stat-label">{{ formatStatName(stat.stat.name) }}</span>
         <p-progressBar 
@@ -65,17 +65,6 @@
           [ngStyle]="{'--stat-color': getStatBarColor(stat.stat.name)}">
         </p-progressBar>
         <span class="stat-value">{{ stat.base_stat }}</span>
-      </div>
-      
-      <div class="stat-item mt-3">
-        <span class="stat-label">EXP</span>
-         <p-progressBar 
-          [value]="calculateExpPercentage(pokemon.base_experience)" 
-          [showValue]="false" 
-          class="stat-progress-bar"
-          [ngStyle]="{'--stat-color': 'var(--primary-color)'}">
-        </p-progressBar>
-        <span class="stat-value">{{ pokemon.base_experience }}</span>
       </div>
     </div>
   </div>

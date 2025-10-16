@@ -1,5 +1,5 @@
 // src/app/app.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PokemonListComponent } from "./pages/pokemon-list/pokemon-list.component";
 import { InputSwitchModule } from 'primeng/inputswitch'; 
@@ -12,8 +12,16 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isLightTheme = false;
+  isLoading = true;
+
+  ngOnInit() {
+    // Simular tiempo de carga de la aplicación
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2500);
+  }
 
   onThemeChange(isLight: boolean): void {
     if (isLight) {

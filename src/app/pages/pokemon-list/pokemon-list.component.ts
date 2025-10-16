@@ -8,17 +8,32 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DropdownModule } from 'primeng/dropdown'; // <-- NUEVA IMPORTACIÓN
+import { DropdownModule } from 'primeng/dropdown'; 
+import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
 
 // --- Importaciones de Componentes y Módulos ---
 import { FormsModule } from '@angular/forms';
 import { PokemonDetailComponent } from '../../components/pokemon-detail/pokemon-detail.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  // Añadimos DropdownModule a los imports
-  imports: [ CommonModule, DecimalPipe, PaginatorModule, InputTextModule, FormsModule, DialogModule, ProgressSpinnerModule, PokemonDetailComponent, DropdownModule ],
+  imports: [ 
+    CommonModule, 
+    DecimalPipe, 
+    PaginatorModule, 
+    InputTextModule, 
+    FormsModule, 
+    DialogModule, 
+    ProgressSpinnerModule, 
+    PokemonDetailComponent, 
+    DropdownModule, 
+    ScrollingModule,
+    ButtonModule,
+    ChipModule
+  ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
@@ -43,6 +58,17 @@ export class PokemonListComponent {
   isDialogVisible: boolean = false;
   selectedPokemon: PokemonDetails | null = null;
   isLoadingDetails: boolean = false;
+
+  // Añadir estas propiedades
+  showFilters = false;
+  pokemonTypes = [
+    { name: 'normal' }, { name: 'fire' }, { name: 'water' }, { name: 'grass' },
+    { name: 'electric' }, { name: 'ice' }, { name: 'fighting' }, { name: 'poison' },
+    { name: 'ground' }, { name: 'flying' }, { name: 'psychic' }, { name: 'bug' },
+    { name: 'rock' }, { name: 'ghost' }, { name: 'dragon' }, { name: 'dark' },
+    { name: 'steel' }, { name: 'fairy' }
+  ];
+  selectedTypes: string[] = [];
 
   constructor() {
     // <-- NUEVO: Definimos las opciones del dropdown en el constructor
@@ -91,17 +117,61 @@ export class PokemonListComponent {
     });
   }
 
+  // Añadir estos métodos
+  toggleFilterPanel(): void {
+    this.showFilters = !this.showFilters;
+  }
+  
+  getTypeColor(type: string): string {
+    const colorMap: Record<string, string> = {
+      normal: '#A8A878', fire: '#F08030', water: '#6890F0', grass: '#78C850',
+      electric: '#F8D030', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
+      ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
+      rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
+      steel: '#B8B8D0', fairy: '#EE99AC'
+    };
+    return colorMap[type.toLowerCase()] || '#A8A878';
+  }
+  
+  toggleTypeFilter(type: string): void {
+    const index = this.selectedTypes.indexOf(type);
+    if (index > -1) {
+      this.selectedTypes.splice(index, 1);
+    } else {
+      this.selectedTypes.push(type);
+    }
+  }
+  
+  clearFilters(): void {
+    this.selectedTypes = [];
+  }
+  
+  applyFilters(): void {
+    this.first = 0;
+    this.applyFilterSortAndPagination(this.first);
+    this.showFilters = false;
+  }
+  
+  // Modificar este método para incluir el filtro por tipo
   private applyFilterSortAndPagination(offset: number): void {
     let processedPokemons = [...this.allPokemons]; // Copiamos para no modificar el original
 
-    // 1. Filtrar
+    // 1. Filtrar por término de búsqueda
     if (this.searchTerm) {
       processedPokemons = processedPokemons.filter(pokemon =>
         pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
+    
+    // 2. Filtrar por tipo (solo si hay tipos seleccionados)
+    if (this.selectedTypes.length > 0) {
+      // Para filtrar por tipo, necesitaríamos tener la información de tipos
+      // En este ejemplo, simulamos que no tenemos esa información a nivel de lista
+      // Esta parte tendría que adaptarse según cómo obtienes los tipos de los Pokémon
+      // Posiblemente necesites modificar tu servicio o extender la interfaz PokemonListItem
+    }
 
-    // 2. Ordenar
+    // 3. Ordenar
     if (this.sortState !== 'none') {
       processedPokemons.sort((a, b) => {
         const result = a.name.localeCompare(b.name);
@@ -109,7 +179,7 @@ export class PokemonListComponent {
       });
     }
 
-    // 3. Paginar
+    // 4. Paginar
     this.totalRecords = processedPokemons.length;
     this.pokemons = processedPokemons.slice(offset, offset + this.rows);
   }
