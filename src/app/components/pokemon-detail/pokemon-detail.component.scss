@@ -90,14 +90,15 @@ body.light-theme ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indica
 }
 
 .pokemon-main-image {
-  width: 300px;
-  height: 300px;
+  width: 200px;  // Reducir de 300px a 270px
+  height: 200px; // Reducir proporcionalmente la altura también
   object-fit: contain;
   filter: drop-shadow(3px 3px 5px var(--shadow-color));
   animation: float 2s ease-in-out infinite;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
+  max-width: 100%; // Asegurar que nunca exceda el ancho del contenedor
 }
 
 .pokemon-info-body {
@@ -240,8 +241,8 @@ body.light-theme .pokemon-id-badge {
 // Ajustes para el popup de detalles en móviles
 @media (max-width: 768px) {
   .pokemon-main-image {
-    width: 250px; // Imagen más pequeña en móviles
-    height: 250px;
+    width: 220px; // Reducir de 250px a 220px
+    height: 220px;
   }
   
   .pokemon-info-body {
@@ -280,6 +281,11 @@ body.light-theme .pokemon-id-badge {
   .pokemon-types {
     flex-wrap: wrap; // Permitir que los tipos envuelvan si hay muchos
     justify-content: center;
+  }
+  
+  // Asegurar que el contenedor del carrusel tenga suficiente espacio
+  .carousel-image-container {
+    padding: 0 10px;
   }
 }
 
