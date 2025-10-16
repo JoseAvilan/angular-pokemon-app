@@ -87,3 +87,17 @@ src/
 ├── assets/                  # Activos estáticos
 └── styles.scss    
 ```
+
+## 🔍 Características en Detalle
+
+Vista de Cuadrícula de Pokémon
+
+La vista principal muestra una cuadrícula de tarjetas de Pokémon con información básica:
+
+- **[Número ID del Pokémon]
+- **[Imagen del sprite]
+- **[Nombre con formato adecuado]
+
+Vista de Detalle
+
+Al hacer clic en una tarjeta de Pokémon se abre un popup detallado que muestra:
