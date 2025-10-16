@@ -143,7 +143,7 @@
 }
 ::ng-deep .p-inputtext, ::ng-deep .p-dropdown .p-dropdown-label {
   background: var(--input-background) !important;
-  color: var(--text-color) !important;
+  color: var(--text-color-secondary) !important; // Cambiar a color secundario
   border-color: var(--input-border) !important;
 }
 
@@ -311,9 +311,9 @@ body.light-theme ::ng-deep .p-paginator {
     color: var(--text-color-secondary) !important;
   }
   
-  // Estilo para la etiqueta/texto seleccionado
+  // Estilo para la etiqueta/texto seleccionado 
   .p-dropdown-label {
-    color: var(--text-color) !important;
+    color: var(--text-color-secondary) !important; // Forzar color gris para ambos temas
   }
 }
 
@@ -325,7 +325,7 @@ body.light-theme ::ng-deep .p-paginator {
   // Estilo para los items de la lista
   .p-dropdown-items {
     .p-dropdown-item {
-      color: var(--text-color) !important;
+      color: var(--text-color);
       
       &:hover {
         background-color: var(--card-border) !important;
@@ -334,7 +334,7 @@ body.light-theme ::ng-deep .p-paginator {
       
       &.p-highlight {
         background-color: var(--primary-color) !important;
-        color: white !important;
+        color: white;
       }
     }
     
@@ -580,20 +580,6 @@ body.light-theme ::ng-deep .p-overlaypanel {
   margin: 0.75rem 0;
 }
 
-// ELIMINAR o COMENTAR estos media queries que modifican las columnas
-/*
-@media (max-width: 400px) {
-  .type-filters {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 500px) {
-  .type-filters {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-*/
 
 .filter-loading {
   display: flex;

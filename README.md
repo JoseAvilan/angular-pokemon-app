@@ -1,59 +1,55 @@
-# AngularPokemonApp
+# Aplicación Pokédex con Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+![Pokédex](https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png)
 
-## Development server
+## 📝 Descripción General
 
-To start a local development server, run:
+Una enciclopedia Pokémon moderna y responsive construida con Angular 19 y PrimeNG. Esta aplicación obtiene datos de [PokéAPI](https://pokeapi.co/) para mostrar información detallada sobre los Pokémon en una interfaz interactiva y visualmente atractiva.
 
-```bash
-ng serve
-```
+## ✨ Características
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Diseño Responsive** - Diseño optimizado tanto para dispositivos de escritorio como móviles
+- **Cambio de Tema** - Alterna entre modos oscuro y claro para una visualización cómoda
+- **Filtrado Avanzado** - Filtra Pokémon por tipo con resultados en tiempo real
+- **Función de Búsqueda** - Encuentra Pokémon por nombre o ID
+- **Opciones de Ordenamiento** - Organiza los Pokémon por diferentes criterios
+- **Información Detallada** - Visualiza detalles completos de cada Pokémon incluyendo estadísticas, tipos y atributos físicos
+- **Variantes Shiny** - Observa tanto sprites normales como shiny a través de un carrusel interactivo
+- **Carga Perezosa** - Las imágenes se cargan bajo demanda para un mejor rendimiento
+- **Resultados Paginados** - Navega por la Pokédex con una paginación eficiente
 
-## Code scaffolding
+## 🖼️ Capturas de Pantalla
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+_(Recomendación: Añade capturas de pantalla de tu aplicación mostrando diferentes características como la vista principal en cuadrícula, el popup de detalles, el filtrado y el cambio de tema)_
 
-```bash
-ng generate component component-name
-```
+## 🛠️ Tecnologías Utilizadas
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **[Angular 19](https://angular.io/)** - Framework moderno de desarrollo web
+- **[PrimeNG 19](https://primeng.org/)** - Biblioteca de componentes UI para Angular
+- **[PrimeFlex](https://primeflex.org/)** - Biblioteca de utilidades CSS
+- **[PrimeIcons](https://primeng.org/icons)** - Biblioteca de iconos
+- **[PokéAPI](https://pokeapi.co/)** - API RESTful de Pokémon
+- **TypeScript** - Para código con tipado seguro
+- **SCSS** - Para estilos avanzados
+- **RxJS** - Para patrones de programación reactiva
 
-```bash
-ng generate --help
-```
+## 🚀 Primeros Pasos
 
-## Building
+### Requisitos Previos
 
-To build the project run:
+- Node.js (v18.x o superior)
+- npm (v9.x o superior)
 
-```bash
-ng build
-```
+### Instalación
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+1. Clona el repositorio:
 
 ```bash
-ng e2e
+git clone https://github.com/tuusuario/angular-pokemon-app.git
+cd angular-pokemon-app
 ```
+2. Instala las dependencias 
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm install
+```
