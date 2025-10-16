@@ -15,7 +15,6 @@ Una enciclopedia Pokémon moderna y responsive construida con Angular 19 y Prime
 - **Opciones de Ordenamiento** - Organiza los Pokémon por diferentes criterios
 - **Información Detallada** - Visualiza detalles completos de cada Pokémon incluyendo estadísticas, tipos y atributos físicos
 - **Variantes Shiny** - Observa tanto sprites normales como shiny a través de un carrusel interactivo
-- **Carga Perezosa** - Las imágenes se cargan bajo demanda para un mejor rendimiento
 - **Resultados Paginados** - Navega por la Pokédex con una paginación eficiente
 
 ## 🖼️ Capturas de Pantalla
@@ -52,4 +51,39 @@ cd angular-pokemon-app
 
 ```bash
 npm install
+```
+
+3. Inicia el servidor de desarrollo:
+
+```bash
+ng serve -o
+```
+
+4. Abre tu navegador y navega a
+[http://localhost:4200/]
+
+### Compilación para Producción
+Para compilar la aplicación para producción, ejecuta: 
+```bash
+npm run build
+```
+
+Esto creará una carpeta dist/angular-pokemon-app con todos los activos compilados listos para su implementación.
+
+## 📂 Estructura del Proyecto
+
+```bash
+src/
+├── app/
+│   ├── components/          # Componentes reutilizables
+│   │   └── pokemon-detail/  # Componente popup de detalle de Pokémon
+│   ├── core/                # Servicios principales y utilidades
+│   │   └── services/        # Servicios de API y datos
+│   ├── interfaces/          # Interfaces TypeScript
+│   ├── pages/               # Componentes de páginas
+│   │   └── pokemon-list/    # Página principal de lista de Pokémon
+│   └── shared/              # Directivas y pipes compartidos
+│       └── directives/      # Directivas personalizadas (p.ej. carga perezosa)
+├── assets/                  # Activos estáticos
+└── styles.scss    
 ```
