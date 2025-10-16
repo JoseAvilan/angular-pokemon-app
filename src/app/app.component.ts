@@ -4,11 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { PokemonListComponent } from "./pages/pokemon-list/pokemon-list.component";
 import { InputSwitchModule } from 'primeng/inputswitch'; 
 import { FormsModule } from '@angular/forms'; 
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   // Añadir los nuevos módulos
-  imports: [RouterOutlet, PokemonListComponent, InputSwitchModule, FormsModule],
+  imports: [PokemonListComponent, InputSwitchModule, FormsModule, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

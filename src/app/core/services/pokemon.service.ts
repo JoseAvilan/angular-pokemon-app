@@ -67,7 +67,7 @@ export class PokemonService {
    */
   getTypeColorScheme(type: string): { primary: string, secondary: string, text: string } {
     const colorMap: Record<string, { primary: string, secondary: string, text: string }> = {
-      normal: { primary: '#A8A878', secondary: '#C6C6A7', text: '#212121' },
+      normal: { primary: '#D3D3D3', secondary: '#C6C6A7', text: '#212121' },
       fighting: { primary: '#C03028', secondary: '#D67873', text: '#FFFFFF' },
       flying: { primary: '#A890F0', secondary: '#C6B7F5', text: '#212121' },
       poison: { primary: '#A040A0', secondary: '#C183C1', text: '#FFFFFF' },

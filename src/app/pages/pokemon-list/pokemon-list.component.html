@@ -28,20 +28,6 @@
     </p-button>
   </div>
   
-<div class="pokemon-grid">
-  <div 
-    *ngFor="let pokemon of pokemons" 
-    class="pokemon-card"
-    (click)="onCardSelect(pokemon)"
-    tabindex="0"
-    (keyup.enter)="onCardSelect(pokemon)">
-    
-    <span class="pokemon-id">#{{ pokemon.id | number: '3.0-0' }}</span>
-    <img [src]="pokemon.imageUrl" [alt]="pokemon.name" class="pokemon-image">
-    <h3 class="pokemon-name">{{ pokemon.name | titlecase }}</h3>
-  </div>
-</div>
-
   <div *ngIf="pokemons.length === 0 && !loading" class="empty-message">
     No se encontraron Pokémon.
   </div>
@@ -52,6 +38,31 @@
       <div class="skeleton-image"></div>
       <div class="skeleton-name"></div>
     </div>
+  </div>
+
+  <div *ngIf="loading || loadingTypes" class="loading-container">
+    <div class="spinner-container">
+      <img src="assets/pokeball.png" alt="Cargando" class="rotating-pokeball">
+      <p>{{ loadingTypes ? 'Aplicando filtros...' : 'Cargando pokémon...' }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!(loading || loadingTypes) && pokemons.length > 0" class="pokemon-grid">
+    <div 
+      *ngFor="let pokemon of pokemons" 
+      class="pokemon-card"
+      (click)="onCardSelect(pokemon)"
+      tabindex="0"
+      (keyup.enter)="onCardSelect(pokemon)">
+      
+      <span class="pokemon-id">#{{ pokemon.id | number: '3.0-0' }}</span>
+      <img [src]="pokemon.imageUrl" [alt]="pokemon.name" class="pokemon-image">
+      <h3 class="pokemon-name">{{ pokemon.name | titlecase }}</h3>
+    </div>
+  </div>
+
+  <div *ngIf="!(loading || loadingTypes) && pokemons.length === 0" class="empty-message">
+    No se encontraron Pokémon.
   </div>
 
   <p-paginator
@@ -87,6 +98,12 @@
     <div class="filter-panel-content">
       <h3>Filtrar por tipo</h3>
       
+      <!-- Añadir un indicador de tipos seleccionados -->
+      <div *ngIf="selectedTypes.length > 0" class="selected-types-indicator">
+        <span>{{ selectedTypes.length }} tipo(s) seleccionado(s)</span>
+        <a class="clear-all" (click)="clearAllTypes()">Limpiar todo</a>
+      </div>
+      
       <div class="type-filters">
         <p-chip 
           *ngFor="let type of pokemonTypes"
@@ -101,12 +118,7 @@
       
       <div *ngIf="loadingTypes" class="filter-loading">
         <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
-        <span>Cargando tipos...</span>
-      </div>
-      
-      <div class="filter-actions">
-        <p-button label="Limpiar" icon="pi pi-times" styleClass="p-button-text" (onClick)="clearFilters()"></p-button>
-        <p-button label="Aplicar" icon="pi pi-check" (onClick)="applyFilters(op)"></p-button>
+        <span>Aplicando filtros...</span>
       </div>
     </div>
   </ng-template>

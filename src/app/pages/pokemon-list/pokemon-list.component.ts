@@ -91,7 +91,10 @@ export class PokemonListComponent {
     
     // Cargar todos los tipos disponibles
     this.pokemonService.getAllTypes().subscribe(types => {
-      this.pokemonTypes = types.map(name => ({ name }));
+      // Filtrar para excluir "stellar" y "unknown"
+      this.pokemonTypes = types
+        .filter(name => name !== 'stellar' && name !== 'unknown')
+        .map(name => ({ name }));
     });
     
     this.pokemonService.getAllPokemonNames().subscribe(response => {
@@ -134,9 +137,10 @@ export class PokemonListComponent {
     op.toggle(event);
   }
   
+  // Modificar el método getTypeColor para eliminar los tipos inexistentes
   getTypeColor(type: string): string {
     const colorMap: Record<string, string> = {
-      normal: '#A8A878', fire: '#F08030', water: '#6890F0', grass: '#78C850',
+      normal: '#D3D3D3', fire: '#F08030', water: '#6890F0', grass: '#78C850',
       electric: '#F8D030', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
       ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
       rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
@@ -152,17 +156,23 @@ export class PokemonListComponent {
     } else {
       this.selectedTypes.push(type);
     }
+    
+    // Aplicar filtro inmediatamente
+    this.first = 0;
+    this.applyFilterSortAndPagination(this.first);
   }
   
   clearFilters(): void {
     this.selectedTypes = [];
   }
-  
-  // Modificar applyFilters para incluir filtrado por tipo
-  applyFilters(op: any): void {
+
+  // Añadir este método para limpiar todos los filtros a la vez
+  clearAllTypes(): void {
+    this.selectedTypes = [];
+    
+    // Aplicar filtro inmediatamente
     this.first = 0;
     this.applyFilterSortAndPagination(this.first);
-    op.hide(); // Ocultar el panel después de aplicar
   }
   
   // Modificar el método de filtrado para incluir tipos

@@ -427,10 +427,10 @@ body.light-theme ::ng-deep .p-paginator {
 }
 
 .type-filters {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // Cambiar a 2 columnas
   gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
 }
 
 .filter-actions {
@@ -463,9 +463,11 @@ body.light-theme ::ng-deep .p-paginator {
 ::ng-deep .p-overlaypanel {
   background: var(--card-background) !important;
   border: 1px solid var(--card-border) !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23) !important;
   
   .p-overlaypanel-content {
     padding: 0.5rem !important;
+    color: var(--text-color) !important;
   }
   
   .p-overlaypanel-close {
@@ -479,6 +481,68 @@ body.light-theme ::ng-deep .p-paginator {
   }
 }
 
+// Estilos para el modo claro - corregido para cambiar el fondo
+body.light-theme ::ng-deep .p-overlaypanel {
+  background: var(--card-background) !important; // Usar la variable del tema claro
+  border-color: var(--card-border) !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+  
+  .p-overlaypanel-close {
+    background: var(--card-background) !important;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+  
+  .p-overlaypanel-content {
+    color: var(--text-color) !important;
+  }
+}
+
+// Reforzar los estilos del panel de filtro para el modo claro
+
+// Estilos para el modo claro - reforzados para cambiar el fondo correctamente
+body.light-theme ::ng-deep .p-overlaypanel {
+  background-color: #ffffff !important; // Color directo en vez de variable
+  border-color: var(--card-border) !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+  
+  .p-overlaypanel-content {
+    background-color: #ffffff !important;
+    color: #1e1e1e !important; // Color de texto oscuro para el modo claro
+  }
+  
+  .p-overlaypanel-close {
+    background-color: #ffffff !important;
+    color: #1e1e1e !important;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+  
+  // Asegurar que el título y textos sean visibles
+  .filter-panel-content {
+    h3 {
+      color: #1e1e1e !important;
+    }
+    
+    .selected-types-indicator {
+      color: #6c757d !important;
+      
+      .clear-all {
+        color: var(--primary-color) !important;
+      }
+    }
+    
+    .filter-loading {
+      color: #6c757d !important;
+    }
+  }
+}
+
+// Estilos para el panel de filtros
 .filter-panel-content {
   padding: 0.5rem;
   
@@ -490,11 +554,134 @@ body.light-theme ::ng-deep .p-paginator {
   }
 }
 
+.selected-types-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+  
+  .clear-all {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: underline;
+    
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.type-filters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // Cambiar a 2 columnas
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+// ELIMINAR o COMENTAR estos media queries que modifican las columnas
+/*
+@media (max-width: 400px) {
+  .type-filters {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 500px) {
+  .type-filters {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+*/
+
 .filter-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
   color: var(--text-color-secondary);
+  animation: fadeIn 0.3s ease;
+}
+
+// Estilos para el loader en la cuadrícula
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: rgba(var(--background-color-rgb, 30, 30, 30), 0.8);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  color: var(--text-color);
+  text-align: center;
+  
+  p {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// Animación para el chip seleccionado
+::ng-deep .selected-chip {
+  border: 2px solid white !important;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.7) !important;
+  transform: scale(1.05);
+  position: relative;
+}
+
+::ng-deep .type-filter-chip {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+}
+
+// Reemplazar o añadir estos estilos para el loader con la pokeball
+
+.rotating-pokeball {
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Estilo específico para el título del panel de filtro
+
+.filter-panel-content h3 {
+  color: white !important;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-weight: 600;
+}
+
+// Estilos adicionales para mejorar la visibilidad en modo claro
+body.light-theme .filter-panel-content h3 {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
 }
