@@ -47,7 +47,6 @@ body.light-theme .close-button {
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 5;
-  // Quitamos el invert(1) para mantener el color blanco original
   filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
   animation: sparkle 1.5s ease-in-out infinite;
 }
@@ -238,6 +237,51 @@ body.light-theme .pokemon-id-badge {
   color: var(--text-color);
 }
 
+// Ajustes para el popup de detalles en móviles
+@media (max-width: 768px) {
+  .pokemon-main-image {
+    width: 250px; // Imagen más pequeña en móviles
+    height: 250px;
+  }
+  
+  .pokemon-info-body {
+    padding: 1rem; // Reducir padding en móviles
+  }
+  
+  .pokemon-physical-data {
+    gap: 1rem; // Menos espacio entre elementos
+  }
+  
+  .pokemon-name {
+    font-size: 1.5rem; // Texto más pequeño
+  }
+  
+  .stat-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    width: 35px; // Más compacto
+  }
+  
+  .stat-progress-bar {
+    margin: 0 0.5rem; // Menos margen
+  }
+  
+  // Asegurar que las estadísticas no causen overflow
+  .pokemon-stats {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  
+  // Ajuste para los tipos en dispositivos pequeños
+  .pokemon-types {
+    flex-wrap: wrap; // Permitir que los tipos envuelvan si hay muchos
+    justify-content: center;
+  }
+}
 
 @keyframes fadeInScale {
   from {

@@ -7,3 +7,41 @@
   right: 2rem;
   z-index: 10;
 }
+
+// Estilos responsivos para el switch de tema en móviles
+@media (max-width: 768px) {
+  .theme-switch-wrapper {
+    top: 1rem;
+    right: 1rem;
+    gap: 0.25rem; // Reducir el espacio entre elementos
+    
+    // Ocultar los iconos en móviles para ahorrar espacio
+    .pi-moon, .pi-sun {
+      display: none;
+    }
+    
+    // Hacer el switch más pequeño
+    ::ng-deep .p-inputswitch {
+      width: 2.5rem !important;
+      height: 1.25rem !important;
+      
+      .p-inputswitch-slider {
+        &:before {
+          width: 0.875rem !important;
+          height: 0.875rem !important;
+          margin-top: -0.4375rem !important;
+          margin-left: -0.4375rem !important;
+        }
+      }
+      
+      &.p-inputswitch-checked .p-inputswitch-slider:before {
+        transform: translateX(1.25rem) !important;
+      }
+    }
+  }
+  
+  // Ajustar el título para evitar solapamiento
+  .pokedex-title {
+    margin-top: 3rem !important; // Dar más espacio arriba para el switch
+  }
+}
